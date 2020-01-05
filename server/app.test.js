@@ -31,7 +31,7 @@ describe('Node Server', () => {
         expect(response.status).toBe(200);
     });
 
-    it('cinemaworld getDetails works', async () => {
+    it.skip('cinemaworld getDetails works', async () => {
         const cinemaworld = new Cinemaworld();
         const response = await cinemaworld.getDetails('cw0076759')
                                     .catch(err => {
@@ -41,9 +41,31 @@ describe('Node Server', () => {
         expect(response.status).toBe(200);
     });
 
-    // it('should run cinemaworld and filmworld simultaneously', async () => {
-    //     const filmworld = new Filmworld();
-    //     const cinemaworld = new Cinemaworld();
-    //     const response = await 
-    // });
+    it('should run cinemaworld and filmworld simultaneously', async () => {
+        const filmworld = new Filmworld();
+        const cinemaworld = new Cinemaworld();
+       
+        const reflect = promise => {
+            return promise.catch(err => err);
+        };
+        
+        const [ filmworldResp, cinemaworldResp ] = await Promise.all([filmworld.list(), cinemaworld.list()].map(reflect));
+        
+        console.log('filmworldresp', filmworldResp);
+        console.log('cinemaworldResp', cinemaworldResp);
+        if (filmworldResp.hasOwnProperty('status')) {
+            console.log('filmworld status', filmworldResp.status);
+        } else if (filmworldResp.hasOwnProperty('response') && typeof(filmworldResp.response) === 'object' && filmworldResp.response.hasOwnProperty('status')) {
+            console.log('filmworld status', filmworldResp.response.status);
+        } else {
+            console.log('flimworld timedout');
+        }
+        if (cinemaworldResp.hasOwnProperty('status')) {
+            console.log('cinemaworld status', cinemaworldResp.status);
+        } else if (cinemaworldResp.hasOwnProperty('response') && typeof(cinemaworldResp.response) === 'object' && cinemaworldResp.response.hasOwnProperty('status')) {
+            console.log('cinemaworld status', cinemaworldResp.response.status);
+        } else {
+            console.log('cinemaworld timedout');
+        }
+    });
 });
