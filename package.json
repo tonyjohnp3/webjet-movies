@@ -5,11 +5,20 @@
   "author": "Tony John <tonyjohnp3@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build:client": "cd client && yarn build",
     "client": "cd client && yarn start",
-    "server": "nodemon server.js",
-    "build": "cd client && yarn build",
+    "build:server": "babel server --out-dir build --ignore **/*.test.js",
+    "server": "concurrently --kill-others-on-fail \"yarn build:server --watch\" \"nodemon build/server.js\"",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "node server.js"
+    "start": "node build/server.js",
+    "test:server": "jest",
+    "test:client": "cd client && yarn test"
+  },
+  "jest": {
+    "roots": ["server"],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -17,5 +26,13 @@
     "concurrently": "^5.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   }
 }

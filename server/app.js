@@ -1,11 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const movies = require('./api/movies');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import path from 'path';
+import Movies from './api/movies';
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,8 +19,6 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.use('/movies', movies.getMovies);
+app.use('/movies', Movies.list);
 
-app.listen(port, () => {
-    console.log('Server running on port ' + port);
-});
+export default app;
