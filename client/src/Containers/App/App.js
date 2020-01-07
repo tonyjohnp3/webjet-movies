@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import MoviesList from '../../Components/MoviesList/MoviesList';
 import MovieDetails from '../../Components/MovieDetails/MovieDetails';
+import AppHeader from '../../Components/AppHeader/AppHeader';
 
 class App extends Component {
   state = {
@@ -39,7 +40,6 @@ class App extends Component {
         console.log('Cinemaworld', cinemaworldResp);
         movies = this.mergeMoviesList(filmworldResp, cinemaworldResp);
         console.log('Movies', movies);
-        // this.setState({ ...this.state, movies, isLoading: false });
         return { movies };
       } else {
         let { fwID, cwID } = this.state.movie.IDs;
@@ -51,12 +51,10 @@ class App extends Component {
         console.log('Cinemaworld details', cinemaworldResp);
         movie = this.mergeMovieDetails(filmworldResp, cinemaworldResp);
         console.log('Movie details', movie);
-        // this.setState({ ...this.state, movie, isLoading: false });
         return { movie };
       }
     } catch (err) {
       console.log(err);
-      // this.setState({ ...this.state, isLoading: false });
     }
   }
 
@@ -212,6 +210,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {!this.state.isMovieSelected ? <AppHeader title="Movies List"/> : <AppHeader title="Movie Details"/>}
         {!this.state.isMovieSelected ? (
           <MoviesList
             movies={this.state.movies}
@@ -222,6 +221,7 @@ class App extends Component {
           <MovieDetails
             movie={this.state.movie}
             onReturnClick={this.onReturnClick}
+            isLoading={this.state.isLoading}
           />
         )}
       </div>
