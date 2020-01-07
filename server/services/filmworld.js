@@ -13,6 +13,9 @@ class Filmworld {
     });
   }
 
+  /**
+   * Fetch movies from filmworld
+   */
   async list() {
     try {
       const url = '/movies';
@@ -37,6 +40,11 @@ class Filmworld {
     }
   }
 
+  /**
+   * Get details for particular movie
+   * 
+   * @param {string} id - movie ID 
+   */
   async getDetails(id) {
     try {
       const url = `/movie/${id}`;

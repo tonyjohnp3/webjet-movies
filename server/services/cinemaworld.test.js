@@ -1,7 +1,7 @@
 import app from '../app';
 import Cinemaworld from './Cinemaworld';
 import axios from 'axios';
-import { mockFilmworldResponse } from '../fixtures/filmworldResponse';
+import { mockCinemaworldDetailsResponse, mockCinemaworldResponse } from '../fixtures/cinemaworldResponse';
 
 jest.mock('axios');
 
@@ -13,7 +13,7 @@ describe('Cinemaworld tests', () => {
 
   it('cinemaworld list works', async () => {
     axios.get.mockImplementationOnce(() =>
-      Promise.resolve(mockFilmworldResponse)
+      Promise.resolve(mockCinemaworldResponse)
     );
 
     const cinemaworld = new Cinemaworld();
@@ -23,15 +23,21 @@ describe('Cinemaworld tests', () => {
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toHaveBeenCalledWith('/movies');
     expect(response.status).toEqual(200);
-    expect(response).toEqual(mockFilmworldResponse);
+    expect(response).toEqual(mockCinemaworldResponse);
   });
 
-  it.skip('cinemaworld getDetails works', async () => {
+  it('cinemaworld getDetails works', async () => {
+    axios.get.mockImplementationOnce(() =>
+      Promise.resolve(mockCinemaworldDetailsResponse)
+    );
+
     const cinemaworld = new Cinemaworld();
-    const response = await cinemaworld.getDetails('cw0076759').catch(err => {
-      console.log('caught cinemaworld error', err);
-    });
-    console.log('Cinemaworld response data', response);
-    expect(response.status).toBe(200);
+    const response = await cinemaworld.getDetails('cw0076759');
+    // console.log('Cinemaworld response data', response);
+    expect(axios.create).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('/movie/cw0076759');
+    expect(response.status).toEqual(200);
+    expect(response).toEqual(mockCinemaworldDetailsResponse);
   });
 });

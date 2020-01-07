@@ -1,10 +1,73 @@
 import app from '../app';
-import Filmworld from '../services/filmworld';
-import Cinemaworld from '../services/cinemaworld';
-import { reflect } from '../utils/reflectPromise';
+import Movie from './movie';
+import Cinemaworld, { mockCinemaworldList, mockCinemaworldGetDetails } from '../__mocks__/Cinemaworld';
+import Filmworld, { mockFilmworldList, mockFilmworldGetDetails } from '../__mocks__/Filmworld';
+import statusCodes from '../constants/statusCodes';
+import { mockFilmworldDetailsResponse, mockFilmworldResponse } from '../fixtures/filmworldResponse';
+import { mockCinemaworldResponse, mockCinemaworldDetailsResponse } from '../fixtures/cinemaworldResponse';
+
+jest.mock('Filmworld');
+jest.mock('Cinemaworld');
 
 describe('Movie model tests', () => {
-  it('should run cinemaworld and filmworld simultaneously', async () => {
+  beforeEach(() => {
+    Cinemaworld.mockClear();
+    Filmworld.mockClear();
+    mockCinemaworldList.mockClear();
+    mockCinemaworldGetDetails.mockClear();
+    mockFilmworldGetDetails.mockClear();
+    mockFilmworldList.mockClear();
+  });
+
+  it('should run cinemaworld and filmworld list simultaneously and combine results', async () => {
+    const combinedMockResponse = {
+      filmworldResp: mockFilmworldResponse,
+      cinemaworldResp: mockCinemaworldResponse
+    };
+    const filmworld = new Filmworld();
+    const cinemaworld = new Cinemaworld();
+    expect(Filmworld).toHaveBeenCalledTimes(1);
+    expect(Cinemaworld).toHaveBeenCalledTimes(1);
+    cinemaworld.list.mockImplementationOnce(() =>
+      Promise.resolve(mockCinemaworldResponse)
+    );
+    filmworld.list.mockImplementationOnce(() =>
+      Promise.resolve(mockFilmworldResponse)
+    );
+
+    const movie = new Movie([filmworld, cinemaworld]);
+    const response = await movie.fetchAll();
+
+    expect(cinemaworld.list).toHaveBeenCalledTimes(1);
+    expect(filmworld.list).toHaveBeenCalledTimes(1);
+    expect(response).toEqual(combinedMockResponse);
+  });
+
+  it('should run cinemaworld and filmworld getDetails simultaneously and combine results', async () => {
+    const combinedMockResponse = {
+      filmworldResp: mockFilmworldDetailsResponse,
+      cinemaworldResp: mockCinemaworldDetailsResponse
+    };
+    const filmworld = new Filmworld();
+    const cinemaworld = new Cinemaworld();
+    expect(Filmworld).toHaveBeenCalledTimes(1);
+    expect(Cinemaworld).toHaveBeenCalledTimes(1);
+    cinemaworld.getDetails.mockImplementationOnce(() =>
+      Promise.resolve(mockCinemaworldDetailsResponse)
+    );
+    filmworld.getDetails.mockImplementationOnce(() =>
+      Promise.resolve(mockFilmworldDetailsResponse)
+    );
+
+    const movie = new Movie([filmworld, cinemaworld]);
+    const response = await movie.getDetails(['fw0076759', 'cw0076759']);
+
+    expect(cinemaworld.getDetails).toHaveBeenCalledTimes(1);
+    expect(filmworld.getDetails).toHaveBeenCalledTimes(1);
+    expect(response).toEqual(combinedMockResponse);
+  });
+
+  it.skip('should run cinemaworld and filmworld simultaneously', async () => {
     const filmworld = new Filmworld();
     const cinemaworld = new Cinemaworld();
 

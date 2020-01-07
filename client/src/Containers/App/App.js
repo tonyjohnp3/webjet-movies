@@ -210,6 +210,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {/* <AppHeader title="Movie"/> */}
         {!this.state.isMovieSelected ? <AppHeader title="Movies List"/> : <AppHeader title="Movie Details"/>}
         {!this.state.isMovieSelected ? (
           <MoviesList

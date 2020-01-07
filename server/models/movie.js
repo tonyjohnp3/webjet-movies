@@ -5,6 +5,9 @@ export default class Movie {
     this.sources = sources;
   }
 
+  /**
+   * Simultaneously fetch movies from filmworld and cinemaworld
+   */
   async fetchAll() {
     try {
       const [filmworldResp, cinemaworldResp] = await Promise.all(
@@ -20,6 +23,11 @@ export default class Movie {
     }
   }
 
+  /**
+   * Simultaneously fetch filmworld and cinemaworld movie details
+   * 
+   * @param {[string, string]} ids - [filmworldId, cinemaworldId]
+   */
   async getDetails(ids) {
     try {
       const [filmworldResp, cinemaworldResp] = await Promise.all(
