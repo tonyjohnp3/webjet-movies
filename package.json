@@ -12,7 +12,8 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "start": "node build/server.js",
     "test:server": "jest",
-    "test:client": "cd client && yarn test"
+    "test:client": "cd client && yarn test",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "jest": {
     "roots": [
