@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
+app.use('/movies', Movies.list);
+app.use('/movie/fwid/:fwid/cwid/:cwid', Movies.getDetails);
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -20,8 +23,5 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   });
 }
-
-app.use('/movies', Movies.list);
-app.use('/movie/fwid/:fwid/cwid/:cwid', Movies.getDetails);
 
 export default app;
