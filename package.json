@@ -5,7 +5,7 @@
   "author": "Tony John <tonyjohnp3@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build:client": "cd client && yarn build",
+    "build:client": "cd client && yarn install && yarn build",
     "client": "cd client && yarn start",
     "build:server": "babel server --out-dir build --ignore **/*.test.js",
     "server": "concurrently --kill-others-on-fail \"yarn build:server --watch\" \"nodemon build/server.js\"",
