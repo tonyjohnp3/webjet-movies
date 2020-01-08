@@ -22,16 +22,26 @@ const MoviesList = props => {
 
   const movieRows = movies.map((movie, index) => (
     <TableRow key={index}>
-      <TableCell component="th" scope="row">{movie.Title}</TableCell>
+      <TableCell component="th" scope="row">
+        {movie.Title}
+      </TableCell>
       <TableCell>{movie.Year}</TableCell>
       <TableCell>{movie.Type}</TableCell>
       <TableCell>
-        <Button variant="contained" color="primary" onClick={() => onMovieSelect(movie)}>Details</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onMovieSelect(movie)}
+        >
+          Details
+        </Button>
       </TableCell>
     </TableRow>
   ));
 
-  return isLoading ? 'Loading...' : (
+  return isLoading ? (
+    'Loading...'
+  ) : (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
@@ -39,6 +49,7 @@ const MoviesList = props => {
             <TableCell>Title</TableCell>
             <TableCell>Year</TableCell>
             <TableCell>Type</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{movieRows}</TableBody>
