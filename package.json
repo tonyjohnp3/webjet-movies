@@ -13,7 +13,7 @@
     "start": "node build/server.js",
     "test:server": "jest",
     "test:client": "cd client && yarn test",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "yarn build:server && yarn build:client"
   },
   "jest": {
     "roots": [
